@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>Linkcheck results for ${name}</title>
+  <style>
+  /*DL, DT, DD TAGS LIST DATA*/
+dl {
+    margin-bottom:50px;
+}
+
+dl dt {
+    background:#5f9be3;
+    color:#fff;
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px;
+    width:100px;
+}
+
+dl dd {
+    margin:2px 0;
+    padding:5px 0;
+}
+
+
+  </style>
+</head>
+<body>
+  <h1>${num} known problems in page ${name}</h1>
+  <tal:loop tal:repeat="url urls">
+    <dl>
+      <dt>URL Name:</dt>
+      <dd>${url['urlname']}</dd>
+      <dt>Parent URL</dt>
+      <dd>${url['parentname']}</dd>
+      <dt>Base</dt>
+      <dd>${url['baseref']}</dd>
+      <dt>Valid</dt>
+      <dd>${url['valid']}</dd>
+      <dt>Result</dt>
+      <dd>${url['result']}</dd>
+      <dt>Warning</dt>
+      <dd>${url['warning']}</dd>
+      <dt>Info</dt>
+      <dd>${url['info']}</dd>
+      <dt>Real URL</dt>
+      <dd>${url['url']}</dd>
+      <dt>Line</dt>
+      <dd>${url['line']}</dd>
+      <dt>Column</dt>
+      <dd>${url['col']}</dd>
+      <dt>Name</dt>
+      <dd>${url['name']}</dd>
+      <dt>Check Time</dt>
+      <dd>${url['checktime']}</dd>
+      <dt>Download Time</dt>
+      <dd>${url['dltime']}</dd>
+      <dt>Size</dt>
+      <dd>${url['dlsize']}</dd>
+      <dt>Cached</dt>
+      <dd>${url['cached']}</dd>
+      <dt>Level</dt>
+      <dd>${url['level']}</dd>
+      <dt>Modified</dt>
+      <dd>${url['modified']}</dd>
+    </dl>
+    <hr/>
+  </tal:loop>
+</body>
+</html>
