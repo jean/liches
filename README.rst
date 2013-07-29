@@ -15,6 +15,8 @@ Getting Started
 Install
 -------
 
+::
+
     $mkdir liches
     $virtualenv --no-site-packages liches/
     $cd liches/

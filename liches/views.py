@@ -1,4 +1,9 @@
 import urlparse
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.url import resource_url
@@ -75,7 +80,12 @@ def parenturl_view(request):
                 'level': url.level,
                 'modified': url.modified,})
         res = {'num': len(results), 'urls': urls, 'name':pagename}
-    return res
+    if request.params.get('format') == 'json':
+        response =  Response(json.dumps(res))
+        response.content_type='application/json'
+        return response
+    else:
+        return res
 
 
 @view_config(route_name='checkpages', renderer='templates/pages.pt')
@@ -96,4 +106,9 @@ def checked_pages_view(request):
             urls.append([url[0],
             resource_url(request.context, request, 'checkurl', query={'url': url[0]})])
         res = {'num': len(results), 'urls': urls, 'name':parenturl}
-    return res
+    if request.params.get('format') == 'json':
+        response =  Response(json.dumps(res))
+        response.content_type='application/json'
+        return response
+    else:
+        return res
