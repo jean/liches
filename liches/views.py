@@ -1,6 +1,7 @@
 import urlparse
 from pyramid.response import Response
 from pyramid.view import view_config
+from pyramid.url import resource_url
 
 from sqlalchemy.exc import DBAPIError
 
@@ -34,7 +35,6 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
-
 
 @view_config(route_name='parenturl', renderer='templates/parenturl.pt')
 def parenturl_view(request):
@@ -78,5 +78,22 @@ def parenturl_view(request):
     return res
 
 
-
-
+@view_config(route_name='checkpages', renderer='templates/pages.pt')
+def checked_pages_view(request):
+    parenturl = request.params.get('url')
+    try:
+        if parenturl:
+            results = DBSession.query(CheckedLink.parentname).filter(ChekedLink.parentname.like(parenturl +'%')).distinct().all()
+        else:
+            results = DBSession.query(CheckedLink.parentname).distinct().all()
+    except DBAPIError:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    if results is None:
+        res = {'num': 0, 'urls': [], 'name': pagename}
+    else:
+        urls = []
+        for url in results:
+            urls.append([url[0],
+            resource_url(request.context, request, 'checkurl', query={'url': url[0]})])
+        res = {'num': len(results), 'urls': urls, 'name':parenturl}
+    return res

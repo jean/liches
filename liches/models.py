@@ -57,7 +57,7 @@ class CheckedLink(Base):
 
     def __init__(self, urlname, parentname, baseref,  result,
                 warning, info, valid, url, line, col, name, dltime,
-                dlsize, checktime, cached, level, modified):
+                dlsize, checktime, cached, level, modified=None):
         self.urlname = urlname
         self.parentname = parentname
         self.baseref = baseref

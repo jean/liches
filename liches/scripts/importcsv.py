@@ -9,6 +9,7 @@ CSV_HEADER =['urlname', 'parentname', 'baseref', 'result', 'warningstring',
     'infostring', 'valid', 'url', 'line', 'column', 'name', 'dltime',
     'dlsize', 'checktime', 'cached', 'level', 'modified']
 
+#urlname;parentname;baseref;result;warningstring;infostring;valid;url;line;column;name;dltime;dlsize;checktime;cached;level
 
 
 
@@ -46,7 +47,8 @@ def main(argv=sys.argv):
     line = reader.next()
     while line[0].startswith('#'):
         line = reader.next()
-    assert(line == CSV_HEADER)
+    import ipdb; ipdb.set_trace()
+    assert(line[:16] == CSV_HEADER[:16])
     with transaction.manager:
         import ipdb; ipdb.set_trace()
         for line in reader:
