@@ -25,6 +25,7 @@ Install
     $mkdir buildout-cache/eggs
     $mkdir buildout-cache/downloads
     $bin/easy_install -u setuptools
+    $wget http://python-distribute.org/bootstrap.py
     $bin/python bootstrap.py
     $bin/buildout
     $rm buildout.cfg
