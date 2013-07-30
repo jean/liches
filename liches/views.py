@@ -93,7 +93,7 @@ def checked_pages_view(request):
     parenturl = request.params.get('url')
     try:
         if parenturl:
-            results = DBSession.query(CheckedLink.parentname).filter(ChekedLink.parentname.like(parenturl +'%')).distinct().all()
+            results = DBSession.query(CheckedLink.parentname).filter(CheckedLink.parentname.like(parenturl +'%')).distinct().all()
         else:
             results = DBSession.query(CheckedLink.parentname).distinct().all()
     except DBAPIError:

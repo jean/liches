@@ -40,5 +40,6 @@ setup(name='liches',
       main = liches:main
       [console_scripts]
       initialize_liches_db = liches.scripts.initializedb:main
+      import_liches_csv = liches.scripts.importcsv:main
       """,
       )

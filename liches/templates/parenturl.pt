@@ -16,6 +16,7 @@ dl dt {
     margin-right:10px;
     padding:5px;
     width:100px;
+    clear: left;
 }
 
 dl dd {
@@ -31,39 +32,39 @@ dl dd {
   <tal:loop tal:repeat="url urls">
     <dl>
       <dt>URL Name:</dt>
-      <dd>${url['urlname']}</dd>
+      <dd><a target="top" tal:attributes="href url['urlname']">${url['urlname']}</a></dd>
       <dt>Parent URL</dt>
-      <dd>${url['parentname']}</dd>
-      <dt>Base</dt>
-      <dd>${url['baseref']}</dd>
-      <dt>Valid</dt>
-      <dd>${url['valid']}</dd>
-      <dt>Result</dt>
-      <dd>${url['result']}</dd>
-      <dt>Warning</dt>
-      <dd>${url['warning']}</dd>
-      <dt>Info</dt>
-      <dd>${url['info']}</dd>
-      <dt>Real URL</dt>
-      <dd>${url['url']}</dd>
-      <dt>Line</dt>
-      <dd>${url['line']}</dd>
-      <dt>Column</dt>
-      <dd>${url['col']}</dd>
-      <dt>Name</dt>
-      <dd>${url['name']}</dd>
-      <dt>Check Time</dt>
-      <dd>${url['checktime']}</dd>
-      <dt>Download Time</dt>
-      <dd>${url['dltime']}</dd>
-      <dt>Size</dt>
-      <dd>${url['dlsize']}</dd>
-      <dt>Cached</dt>
-      <dd>${url['cached']}</dd>
-      <dt>Level</dt>
-      <dd>${url['level']}</dd>
-      <dt>Modified</dt>
-      <dd>${url['modified']}</dd>
+      <dd><b><a target="top" tal:attributes="href url['parentname']">${url['parentname']}</a></b></dd>
+      <dt tal:condition="url['baseref']">Base</dt>
+      <dd tal:condition="url['baseref']">${url['baseref']}</dd>
+      <dt tal:condition="url['valid']">Valid</dt>
+      <dd tal:condition="url['valid']">${url['valid']}</dd>
+      <dt tal:condition="url['result']">Result</dt>
+      <dd tal:condition="url['result']">${url['result']}</dd>
+      <dt tal:condition="url['warning']">Warning</dt>
+      <dd tal:condition="url['warning']">${url['warning']}</dd>
+      <dt tal:condition="url['info']">Info</dt>
+      <dd tal:condition="url['info']">${url['info']}</dd>
+      <dt tal:condition="url['url']">Real URL</dt>
+      <dd tal:condition="url['url']"><a target="top" tal:attributes="href url['urlname']">${url['url']}</a></dd>
+      <dt tal:condition="url['line']">Line</dt>
+      <dd tal:condition="url['line']">${url['line']}</dd>
+      <dt tal:condition="url['col']">Column</dt>
+      <dd tal:condition="url['col']">${url['col']}</dd>
+      <dt tal:condition="url['name']">Name</dt>
+      <dd tal:condition="url['name']">${url['name']}</dd>
+      <dt tal:condition="url['checktime']">Check Time</dt>
+      <dd tal:condition="url['checktime']">${url['checktime']}</dd>
+      <dt tal:condition="url['dltime']">Download Time</dt>
+      <dd tal:condition="url['dltime']">${url['dltime']}</dd>
+      <dt tal:condition="url['dlsize']">Size</dt>
+      <dd tal:condition="url['dlsize']">${url['dlsize']}</dd>
+      <dt tal:condition="url['cached']">Cached</dt>
+      <dd tal:condition="url['cached']">${url['cached']}</dd>
+      <dt tal:condition="url['level']">Level</dt>
+      <dd tal:condition="url['level']">${url['level']}</dd>
+      <dt tal:condition="url['modified']">Modified</dt>
+      <dd tal:condition="url['modified']">${url['modified']}</dd>
     </dl>
     <hr/>
   </tal:loop>
