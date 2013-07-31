@@ -2,9 +2,13 @@ Introduction
 ==================
 
 Liches wraps the linkchecker_ output into a web interface.
-It can generate JSON_ output to integrate it into a website,
-e.g: https://github.com/collective/collective.liches
-
+You can run Liches as a stand-alone service for use with your websites
+regardless of the language they're written in. While Liches itself is
+written in Python, it interacts with your website purely via HTTP and
+JSON_. You can even integrate it with pure javascript without the need of
+server side programming or use it as a stand alone service.
+An example how to integrate it into a website can be found at
+https://github.com/collective/collective.liches
 
 Install
 =======
