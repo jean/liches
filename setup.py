@@ -18,7 +18,7 @@ requires = [
     ]
 
 setup(name='liches',
-      version='0.1',
+      version='0.2',
       description='Liches a server for linkchecker results',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

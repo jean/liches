@@ -1,4 +1,14 @@
+0.2 (2013/07/31)
+-----------------
+
+- Add script to empty db
+- fixes
+- more documentation
+- add license
+
+
 0.1 (2013/07/31)
 ----------------
 
 -  Initial version
+
