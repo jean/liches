@@ -1,19 +1,28 @@
-liches README
+Liches README
 ==================
+
+Liches wraps the linkchecker_ output into a web interface.
+It can generate JSON ouput to integrate it into a website,
+e.g: https://github.com/collective/collective.liches
+
+
+
 
 Getting Started
 ---------------
 
-- cd <directory containing this file>
-
-- $venv/bin/python setup.py develop
-
-- $venv/bin/initialize_liches_db development.ini
-
-- $venv/bin/pserve development.ini
+TBD
 
 Install
--------
+=======
+
+Install for Production
+----------------------
+
+TBD
+
+Install for development
+------------------------
 
 ::
 
@@ -31,4 +40,8 @@ Install
     $rm buildout.cfg
     $ln -s src/liches/buildout.cfg
     $ln -s src/liches/development.ini
+    $bin/initialize_liches_db development.ini
     $bin/pserve development.ini
+
+
+.. _linkchecker: http://wummel.github.io/linkchecker/
