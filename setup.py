@@ -46,5 +46,6 @@ setup(name='liches',
       [console_scripts]
       initialize_liches_db = liches.scripts.initializedb:main
       import_liches_csv = liches.scripts.importcsv:main
+      empty_link_table = liches.scripts.emptydb:main
       """,
       )

@@ -39,24 +39,5 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    fo = open('linkchecker-out.csv', 'rU')
-    reader=csv.reader(fo, delimiter=';')
-    line = reader.next()
-    while line[0].startswith('#'):
-        line = reader.next()
-    assert(line[:16] == CSV_HEADER[:16])
     with transaction.manager:
-        try:
-            for line in reader:
-                if line[0].startswith('#'):
-                    continue
-                else:
-                    line[10] = line[10].decode('UTF-8')
-                i=0
-                for l in line:
-                    print i,CSV_HEADER[i],l
-                    i+=1
-                checked_link = CheckedLink( *line)
-                DBSession.add(checked_link)
-        except:
-            print "Error in line: ", line
+        DBSession.query(CheckedLink).delete()
