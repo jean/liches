@@ -1,4 +1,4 @@
-Liches README
+Introduction
 ==================
 
 Liches wraps the linkchecker_ output into a web interface.
@@ -92,7 +92,7 @@ in JSON_ format.
 
 The links will take you to a page with detailed results for this page e.g.
 `http://localhost:6543/checkurl?url=http://localhost/index.html`
-which can also be accessed as JSON _
+which can also be accessed as JSON_
 `http://localhost:6543/checkurl?url=http://localhost/index.html&format=json`
 
 
