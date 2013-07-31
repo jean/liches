@@ -94,11 +94,15 @@ pages at `http://localhost:6543/getpages`.
 At `http://localhost:6543/getpages?format=json` you can access the data
 in JSON_ format.
 
+.. image:: https://raw.github.com/cleder/liches/master/docs/liches-brokenpages.png
+
+
 The links will take you to a page with detailed results for this page e.g.
 `http://localhost:6543/checkurl?url=http://localhost/index.html`
 which can also be accessed as JSON_
 `http://localhost:6543/checkurl?url=http://localhost/index.html&format=json`
 
+..image:: https://raw.github.com/cleder/liches/master/docs/liches-brokenlinks.png
 
 .. _linkchecker: http://wummel.github.io/linkchecker/
 .. _virtualenv: http://www.virtualenv.org/
