@@ -25,13 +25,13 @@ from ..models import (
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
-    print('usage: %s <config_uri>\n'
+    print('usage: %s <config_uri> [parent_url]\n'
           '(example: "%s development.ini")' % (cmd, cmd))
     sys.exit(1)
 
 
 def main(argv=sys.argv):
-    if len(argv) != 2:
+    if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]
     setup_logging(config_uri)
@@ -40,4 +40,8 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        DBSession.query(CheckedLink).delete()
+        if len(argv) < 3:
+            DBSession.query(CheckedLink).delete()
+        else:
+            DBSession.query(CheckedLink).filter(CheckedLink.parentname.like(argv[2] +'%')).delete(synchronize_session=False)
+            DBSession.expire_all()

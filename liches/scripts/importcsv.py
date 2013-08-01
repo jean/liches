@@ -25,13 +25,13 @@ from ..models import (
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
-    print('usage: %s <config_uri>\n'
+    print('usage: %s <config_uri> [filename] \n'
           '(example: "%s development.ini")' % (cmd, cmd))
     sys.exit(1)
 
 
 def main(argv=sys.argv):
-    if len(argv) != 2:
+    if len(argv) < 2:
         usage(argv)
     config_uri = argv[1]
     setup_logging(config_uri)
@@ -39,7 +39,10 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    fo = open('linkchecker-out.csv', 'rU')
+    if len(argv) < 3:
+        fo = open('linkchecker-out.csv', 'rU')
+    else:
+        fo = open(argv[2], 'rU')
     reader=csv.reader(fo, delimiter=';')
     line = reader.next()
     while line[0].startswith('#'):

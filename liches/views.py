@@ -1,4 +1,6 @@
+from subprocess import Popen
 import urlparse
+import sys
 try:
     import simplejson as json
 except ImportError:
@@ -14,6 +16,17 @@ from .models import (
     DBSession,
     CheckedLink,
     )
+
+def invalid_url(url):
+    if not url:
+        return 'Required parameter url is missing'
+    urlobj = urlparse.urlparse(url)
+    if urlobj.scheme not in ['http', 'https']:
+        return 'url must start with http:// or https://'
+    if not urlobj.hostname:
+        return 'Required hostname is missing'
+    return False
+
 
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -43,13 +56,10 @@ try it again.
 @view_config(route_name='parenturl', renderer='templates/parenturl.pt')
 def parenturl_view(request):
     parenturl = request.params.get('url')
-    if not parenturl:
-        return Response('Required parameter url is missing', content_type='text/plain', status_int=500)
+    error = invalid_url(parenturl)
+    if error:
+        return Response(error, content_type='text/plain', status_int=500)
     urlobj = urlparse.urlparse(parenturl)
-    if urlobj.scheme not in ['http', 'https']:
-        return Response('url must start with http:// or https://', content_type='text/plain', status_int=500)
-    if not urlobj.hostname:
-        return Response('Required hostname is missing', content_type='text/plain', status_int=500)
     pagename = urlparse.urlunparse([urlobj.scheme, urlobj.netloc, urlobj.path, None, None, None])
     try:
         results = DBSession.query(CheckedLink).filter_by(parentname=parenturl).distinct().all()
@@ -111,3 +121,19 @@ def checked_pages_view(request):
         return response
     else:
         return res
+
+@view_config(route_name='checkurl', renderer='templates/checklink.pt')
+def check_url(request):
+    url = request.params.get('url')
+    api_key = request.params.get('apikey')
+    error = invalid_url(url)
+    if error:
+        return Response(error, content_type='text/plain', status_int=500)
+    process = Popen(['bin/checkpage', sys.argv[1], url])
+    result = {'status': 'linkcheck initialized', 'name': url}
+    if request.params.get('format') == 'json':
+        response =  Response(json.dumps(result))
+        response.content_type='application/json'
+        return response
+    else:
+        return result
