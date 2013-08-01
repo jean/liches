@@ -1,6 +1,8 @@
 from subprocess import Popen
 import urlparse
 import sys
+import time
+import hashlib
 try:
     import simplejson as json
 except ImportError:
@@ -17,16 +19,7 @@ from .models import (
     CheckedLink,
     )
 
-def invalid_url(url):
-    if not url:
-        return 'Required parameter url is missing'
-    urlobj = urlparse.urlparse(url)
-    if urlobj.scheme not in ['http', 'https']:
-        return 'url must start with http:// or https://'
-    if not urlobj.hostname:
-        return 'Required hostname is missing'
-    return False
-
+from .utils import invalid_url, API_KEY
 
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -122,15 +115,24 @@ def checked_pages_view(request):
     else:
         return res
 
-@view_config(route_name='checkurl', renderer='templates/checklink.pt')
+@view_config(route_name='linkcheck', renderer='templates/checklink.pt')
 def check_url(request):
     url = request.params.get('url')
-    api_key = request.params.get('apikey')
+    key = request.params.get('key')
     error = invalid_url(url)
     if error:
         return Response(error, content_type='text/plain', status_int=500)
-    process = Popen(['bin/checkpage', sys.argv[1], url])
-    result = {'status': 'linkcheck initialized', 'name': url}
+    t = int(time.time()/100)
+    valid = False
+    for i in range(-1,2):
+        if hashlib.md5(str(t+i) +API_KEY + url).hexdigest() == key:
+            valid = True
+            break
+    if valid:
+        process = Popen(['bin/checkpage', sys.argv[1], url])
+        result = {'status': 'linkcheck initialized', 'name': url}
+    else:
+        return Response('illegal or missing key', content_type='text/plain', status_int=403)
     if request.params.get('format') == 'json':
         response =  Response(json.dumps(result))
         response.content_type='application/json'

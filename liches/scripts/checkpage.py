@@ -6,7 +6,7 @@ import sys
 import emptydb
 import importcsv
 
-from ..views import invalid_url
+from ..utils import invalid_url
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
