@@ -3,6 +3,9 @@ import ConfigParser
 import urlparse
 import string
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 config = ConfigParser.SafeConfigParser()
 config.read(sys.argv[1])
@@ -13,7 +16,7 @@ except:
 if not API_KEY:
     API_KEY = ''.join(random.sample(string.ascii_letters + string.digits,
                 16))
-
+    logger.warn('API Key: %s' % API_KEY)
 
 
 def invalid_url(url):

@@ -67,6 +67,34 @@ In the virtualenv you created above execute these commands:
     $ bin/initialize_liches_db development.ini
     $ bin/pserve development.ini
 
+Configuration
+--------------
+
+You configure you liches server in you production.ini or development.ini
+file.
+
+Database
++++++++++
+
+In the `[app:main]` section of you configuration file change the sqlalchemy.url_
+to point to your database (or leave it like it is if you want to use sqllite)
+
+.. _sqlalchemy.url: http://docs.sqlalchemy.org/en/rel_0_8/core/engines.html#database-urls
+
+API Key
+++++++++
+
+To enable a website to request a linkcheck of a particular page you have
+to provide an `api_key` in the `[liches]` section of your ini file. If this
+parameter is not set liches will generate a random key every time it is
+started. The generated key will be displayed during startup.
+
+::
+
+    2013-08-05 17:16:01,085 WARNI [liches.utils][MainThread] API Key: w4NhYBHSVGzfmpiK
+
+As the generated key is reasonably unique and complicated you may copy
+it into your ini file.
 
 Getting Started
 ===============
