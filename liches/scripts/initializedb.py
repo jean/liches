@@ -1,6 +1,8 @@
 import os
 import sys
 import transaction
+import string
+import random
 
 from sqlalchemy import engine_from_config
 
@@ -13,6 +15,7 @@ from ..models import (
     DBSession,
     CheckedLink,
     Base,
+    User,
     )
 
 
@@ -32,3 +35,14 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
+    with transaction.manager:
+        un = raw_input('Username:  ')
+        pw = raw_input('Password (leave empty to generate): ')
+        if not pw:
+            pw = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+            print( 'password generated: ', pw)
+        fn = raw_input('Fullname: ')
+        em = raw_input('Email: ')
+        user = User(un, pw, fn, em)
+        DBSession.add(user)
+

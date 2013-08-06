@@ -15,10 +15,12 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'linkchecker',
+    'cryptacular',
+    'pyramid_simpleform',
     ]
 
 setup(name='liches',
-      version='0.2',
+      version='0.3',
       description='Liches a server for linkchecker results',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[

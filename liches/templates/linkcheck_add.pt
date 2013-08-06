@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal">
+
+<head>
+  <title>Add linkcheck</title>
+</head>
+
+<body>
+    <h1>Linkcheck</h1>
+    ${form.begin(request.route_url('addlinkcheck'))}
+        <fieldset>
+            ${form.csrf_token()}
+            ${form.errorlist('url')}
+            ${form.label('url', 'URL:')}
+            ${form.text('url')}
+            <br />
+            ${form.errorlist('root_url')}
+            ${form.label('root_url', 'Site Root URL:')}
+            ${form.text('root_url')}
+            <br />
+            ${form.errorlist('recursion_level')}
+            ${form.label('recursion_level', 'Recursion Level:')}
+            ${form.text('recursion_level')}
+            <br />
+            ${form.errorlist('active')}
+            ${form.label('active', 'Active:')}
+            ${form.checkbox('active', checked=True)}
+            <br />
+            ${form.errorlist('check_css')}
+            ${form.label('check_css', 'Check CSS:')}
+            ${form.checkbox('check_css')}
+            <br />
+            ${form.errorlist('check_html')}
+            ${form.label('check_html', 'Check HTML:')}
+            ${form.checkbox('check_html')}
+            <br />
+            ${form.errorlist('scan_virus')}
+            ${form.label('scan_virus', 'Scan for viruses:')}
+            ${form.checkbox('scan_virus')}
+            <br />
+            ${form.errorlist('warnings')}
+            ${form.label('warnings', 'Warnings:')}
+            ${form.checkbox('warnings', checked=True)}
+            <br />
+            ${form.errorlist('warning_size')}
+            ${form.label('warning_size', 'Warning Size:')}
+            ${form.text('warnings')}
+            <br />
+            ${form.errorlist('anchors')}
+            ${form.label('anchors', 'Check anchors:')}
+            ${form.checkbox('anchors')}
+            <br />
+            ${form.errorlist('cookies')}
+            ${form.label('cookies', 'Cookies:')}
+            ${form.checkbox('cookies')}
+            <br />
+            ${form.errorlist('cookiefile')}
+            ${form.label('cookiefile', 'Cookie File:')}
+            ${form.textarea('cookiefile')}
+            <br />
+            ${form.errorlist('ignore_url')}
+            ${form.label('ignore_url', 'Ignore URL:')}
+            ${form.textarea('ignore_url')}
+            <br />
+            ${form.errorlist('no_follow_url')}
+            ${form.label('no_follow_url', 'No follow URL:')}
+            ${form.textarea('no_follow_url')}
+            <br />
+            ${form.errorlist('timeout')}
+            ${form.label('timeout', 'Timeout:')}
+            ${form.text('timeout')}
+            <br />
+            ${form.errorlist('pause')}
+            ${form.label('pause', 'Pause:')}
+            ${form.text('pause')}
+            <br />
+            ${form.submit('form.submitted', 'Register', class_='submit')}
+        </fieldset>
+    ${form.end()}
+</body>
+</html>

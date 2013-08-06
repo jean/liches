@@ -5,11 +5,6 @@ import csv
 
 from sqlalchemy import engine_from_config
 
-CSV_HEADER =['urlname', 'parentname', 'baseref', 'result', 'warningstring',
-    'infostring', 'valid', 'url', 'line', 'column', 'name', 'dltime',
-    'dlsize', 'checktime', 'cached', 'level', 'modified']
-
-
 
 from pyramid.paster import (
     get_appsettings,
