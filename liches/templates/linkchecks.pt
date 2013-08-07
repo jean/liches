@@ -9,7 +9,8 @@
   <a href="${request.route_url('home')}">back to homepage</a>
   <ul>
     <li tal:repeat="url urls">
-        <a tal:attributes="href url['url']">${url['name']}</a>
+        <a tal:attributes="href url['url']">${url['name']}</a> -
+        <a tal:attributes="href string:${request.route_url('checkpages')}?url=${url['name']}">Results</a>
         <br />
         ${url['options']} ${url['start']}
     </li>

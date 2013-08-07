@@ -40,16 +40,17 @@ In the virtualenv you created above execute these commands
     $ bin/pip install liches
     $ wget https://raw.github.com/cleder/liches/master/production.ini
     $ bin/initialize_liches_db production.ini
+    Username [admin]:
+    Password [generate]:
+    ('password generated: ', 'whmgfi6r')
+    Fullname: Administrator
+    Email: root@localhost
     $ bin/pserve production.ini
-
-
-
 
 Install for development
 ------------------------
 
 In the virtualenv you created above execute these commands:
-
 
 ::
 
@@ -65,6 +66,11 @@ In the virtualenv you created above execute these commands:
     $ ln -s src/liches/buildout.cfg
     $ ln -s src/liches/development.ini
     $ bin/initialize_liches_db development.ini
+    Username [admin]:
+    Password [generate]:
+    ('password generated: ', 'whmgfi6r')
+    Fullname: Administrator
+    Email: root@localhost
     $ bin/pserve development.ini
 
 Configuration
@@ -99,6 +105,40 @@ it into your ini file.
 Getting Started
 ===============
 
+Define your linkchecks in the web GUI or alternatively import linkchecks
+from the commandline.
+
+Web GUI
+--------
+
+Open your Liches server in your webbrowser.
+
+.. image:: https://raw.github.com/cleder/liches/master/docs/liches-home-loggedout.png
+
+Log into your liches server.
+
+.. image:: https://raw.github.com/cleder/liches/master/docs/liches-home-loggedin.png
+
+Goto linkchecks.
+
+.. image:: https://raw.github.com/cleder/liches/master/docs/liches-linkchecks.png
+
+and add a new linkcheck.
+
+.. image:: https://raw.github.com/cleder/liches/master/docs/liches-add-linkcheck.png
+
+On the commandline you can then call:
+
+::
+
+    $ bin/liches_linkchecker development.ini
+
+This command will call linkchecker_ for all the checks you have enabled
+and import the results into the database. For regular linkchecks you can
+call this command as a cron job.
+
+Manual Import
+--------------
 Check a site for bad links with e.g:
 
 ::
@@ -113,6 +153,8 @@ Import the output produced by linkchecker_ into liches
 
     $ bin/import_liches_csv production.ini
 
+View the results
+-----------------
 
 Open `http://localhost:6543/` in your browser to see the results. The
 frontpage tells you how many pages with broken urls are in your site.
@@ -123,7 +165,6 @@ At `http://localhost:6543/getpages?format=json` you can access the data
 in JSON_ format.
 
 .. image:: https://raw.github.com/cleder/liches/master/docs/liches-brokenpages.png
-
 
 The links will take you to a page with detailed results for this page e.g.
 `http://localhost:6543/checkurl?url=http://localhost/index.html`

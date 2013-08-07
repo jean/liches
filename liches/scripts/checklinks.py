@@ -1,8 +1,12 @@
+import csv
 import subprocess
 import string
 import random
 import os
 import sys
+import transaction
+
+from sqlalchemy import engine_from_config
 
 from ..utils import invalid_url, linkchecker_options
 
@@ -36,7 +40,7 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
-    linkchecks = DBSession.query(LinkCheck).filter_by(active=true).all()
+    linkchecks = DBSession.query(LinkCheck).filter_by(active=True).all()
     for linkcheck in linkchecks:
         filename = ''.join(random.sample(
             string.ascii_letters + string.digits, 16)) + '.csv'
@@ -69,4 +73,4 @@ def main(argv=sys.argv):
                     DBSession.add(checked_link)
             except:
                 print "Error in line: ", line
-        #os.remove(filename)
+        os.remove(filename)
