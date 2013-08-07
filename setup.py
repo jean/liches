@@ -50,5 +50,6 @@ setup(name='liches',
       import_liches_csv = liches.scripts.importcsv:main
       empty_link_table = liches.scripts.emptydb:main
       checkpage = liches.scripts.checkpage:main
+      liches_linkchecker = liches.scripts.checklinks:main
       """,
       )

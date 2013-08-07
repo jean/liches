@@ -13,17 +13,17 @@
             ${form.errorlist('url')}
             ${form.label('url', 'URL:')}
             <div class="form-help">Start linkchecking at this URL</div>
-            ${form.text('url')}
+            ${form.text('url', value=data.url)}
             <br />
             ${form.errorlist('root_url')}
             ${form.label('root_url', 'Site Root URL:')}
             <div class="form-help">Root URL of the checke site</div>
-            ${form.text('root_url')}
+            ${form.text('root_url', value=data.root_url)}
             <br />
             ${form.errorlist('active')}
             ${form.label('active', 'Active:')}
             <div class="form-help">Only active linkchecks will be executed</div>
-            ${form.checkbox('active', checked=True)}
+            ${form.checkbox('active', checked=data.active)}
             <br />
             ${form.errorlist('recursion_level')}
             ${form.label('recursion_level', 'Recursion Level:')}
@@ -32,35 +32,35 @@
             A zero or negative depth will enable infinite recursion.
             Default depth is infinite.
             </div>
-            ${form.text('recursion_level')}
+            ${form.text('recursion_level', value=data.recursion_level)}
             <br />
             ${form.errorlist('check_css')}
             ${form.label('check_css', 'Check CSS:')}
             <div class="form-help">
             Check syntax of CSS URLs with the W3C online validator.
             </div>
-            ${form.checkbox('check_css')}
+            ${form.checkbox('check_css', checked=data.check_css)}
             <br />
             ${form.errorlist('check_html')}
             ${form.label('check_html', 'Check HTML:')}
             <div class="form-help">
             Check syntax of HTML URLs with the W3C online validator.
             </div>
-            ${form.checkbox('check_html')}
+            ${form.checkbox('check_html', checked=data.check_html)}
             <br />
             ${form.errorlist('scan_virus')}
             ${form.label('scan_virus', 'Scan for viruses:')}
             <div class="form-help">
             Scan content of URLs for viruses with ClamAV.
             </div>
-            ${form.checkbox('scan_virus')}
+            ${form.checkbox('scan_virus', checked=data.scan_virus)}
             <br />
             ${form.errorlist('warnings')}
             ${form.label('warnings', 'Warnings:')}
             <div class="form-help">
             Log warnings. Default is not to log warnings.
             </div>
-            ${form.checkbox('warnings', checked=True)}
+            ${form.checkbox('warnings', checked=data.warnings)}
             <br />
             ${form.errorlist('warning_size')}
             ${form.label('warning_size', 'Warning Size:')}
@@ -68,7 +68,7 @@
             Print a warning if content size info is available and exceeds
             the given number of bytes.
             </div>
-            ${form.text('warning_size')}
+            ${form.text('warning_size', value=data.warning_size)}
             <br />
             ${form.errorlist('anchors')}
             ${form.label('anchors', 'Check anchors:')}
@@ -76,7 +76,7 @@
             Check HTTP anchor references. Default is not to check anchors.
             This option enables logging of the warning <b>url-anchor-not-found</b>.
             </div>
-            ${form.checkbox('anchors')}
+            ${form.checkbox('anchors', checked=data.anchors)}
             <br />
             ${form.errorlist('cookies')}
             ${form.label('cookies', 'Cookies:')}
@@ -86,7 +86,7 @@
             accepted. Sent and accepted cookies are provided as additional
             logging information.
             </div>
-            ${form.checkbox('cookies')}
+            ${form.checkbox('cookies', checked=data.cookies)}
             <br />
             <!--
             ${form.errorlist('cookiefile')}
@@ -94,7 +94,7 @@
             <div class="form-help">
             Read a file with initial cookie data.
             </div>
-            ${form.textarea('cookiefile')}
+            ${form.textarea('cookiefile', value=data.cookiefile)}
             <br />
             -->
             ${form.errorlist('ignore_url')}
@@ -103,7 +103,7 @@
             URLs matching the given regular expressions will be ignored
             and not checked.
             </div>
-            ${form.textarea('ignore_url')}
+            ${form.textarea('ignore_url', value=data.ignore_url)}
             <br />
             ${form.errorlist('no_follow_url')}
             ${form.label('no_follow_url', 'No follow URL:')}
@@ -111,7 +111,7 @@
             Check but do not recurse into URLs matching the given regular
             expressions.
             </div>
-            ${form.textarea('no_follow_url')}
+            ${form.textarea('no_follow_url', value=data.no_follow_url)}
             <br />
             ${form.errorlist('timeout')}
             ${form.label('timeout', 'Timeout:')}
@@ -119,7 +119,7 @@
             Set the timeout for connection attempts in seconds.
             The default timeout is 60 seconds.
             </div>
-            ${form.text('timeout')}
+            ${form.text('timeout', value=data.timeout)}
             <br />
             ${form.errorlist('pause')}
             ${form.label('pause', 'Pause:')}
@@ -128,7 +128,7 @@
             connection requests to the same host. Default is no pause
             between requests.
             </div>
-            ${form.text('pause')}
+            ${form.text('pause', value=data.pause)}
             <br />
             ${form.submit('form.submitted', 'Submit', class_='submit')}
             ${form.submit('form.canceled', 'Cancel', class_='submit')}

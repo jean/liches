@@ -1,8 +1,9 @@
-from subprocess import Popen
+import hashlib
 import urlparse
+import re
+from subprocess import Popen
 import sys
 import time
-import hashlib
 try:
     import simplejson as json
 except ImportError:
@@ -38,11 +39,42 @@ import formencode
 from pyramid_simpleform import Form
 from pyramid_simpleform.renderers import FormRenderer
 
+from .utils import invalid_url, API_KEY, linkchecker_options
 
-from .utils import invalid_url, API_KEY
+class SecurePassword(formencode.validators.FancyValidator):
+
+     min = 6
+     non_letter = 2
+     letter_regex = re.compile(r'[a-zA-Z]')
+
+     messages = {
+         'too_few': 'Your password must be longer than %(min)i '
+                   'characters long',
+         'non_letter': 'You must include at least %(non_letter)i '
+                      'characters in your password',
+         }
+
+     def _convert_to_python(self, value, state):
+         # _convert_to_python gets run before _validate_python.
+         # Here we strip whitespace off the password, because leading
+         # and trailing whitespace in a password is too elite.
+         return value.strip()
+
+     def _validate_python(self, value, state):
+         if len(value) < self.min:
+             raise Invalid(self.message("too_few", state,
+                                        min=self.min),
+                           value, state)
+         non_letters = self.letter_regex.sub('', value)
+         if len(non_letters) < self.non_letter:
+             raise Invalid(self.message("non_letter",
+                                         non_letter=self.non_letter),
+                           value, state)
 
 
-@view_config(route_name='home', renderer='templates/mytemplate.pt', permission='view')
+
+
+@view_config(route_name='home', renderer='templates/home.pt', permission='view')
 def my_view(request):
     try:
         result = DBSession.query(CheckedLink.parentname).distinct().count()
@@ -194,10 +226,10 @@ def logout_view(request):
 class RegistrationSchema(formencode.Schema):
     allow_extra_fields = True
     username = formencode.validators.PlainText(not_empty=True)
-    password = formencode.validators.PlainText(not_empty=True)
+    #password = formencode.validators.PlainText(not_empty=True)
     email = formencode.validators.Email(resolve_domain=False)
     name = formencode.validators.String(not_empty=True)
-    password = formencode.validators.String(not_empty=True)
+    password = SecurePassword()
     confirm_password = formencode.validators.String(not_empty=True)
     chained_validators = [
         formencode.validators.FieldsMatch('password', 'confirm_password')
@@ -207,9 +239,8 @@ class RegistrationSchema(formencode.Schema):
 @view_config(permission='edit', route_name='register',
              renderer='templates/user_add.pt')
 def user_add(request):
-
     form = Form(request, schema=RegistrationSchema)
-
+    redirect_url = request.route_url('home')
     if 'form.submitted' in request.POST and form.validate():
         session = DBSession()
         username = form.data['username']
@@ -220,25 +251,54 @@ def user_add(request):
             email=form.data['email']
         )
         session.add(user)
-
         headers = remember(request, username)
-
-        redirect_url = request.route_url('home')
-
         return HTTPFound(location=redirect_url, headers=headers)
-
-
-
+    elif 'form.canceled' in request.POST:
+        return HTTPFound(location=redirect_url)
     return {
         'form': FormRenderer(form),
     }
+
+class UserPreferencesSchema(formencode.Schema):
+    allow_extra_fields = True
+    old_password = formencode.validators.PlainText()
+    email = formencode.validators.Email(resolve_domain=False)
+    name = formencode.validators.String(not_empty=True)
+    new_password = SecurePassword()
+    confirm_password = formencode.validators.String()
+    chained_validators = [
+        formencode.validators.FieldsMatch('new_password', 'confirm_password')
+    ]
+
+@view_config(permission='edit', route_name='preferences',
+             renderer='templates/user_edit.pt')
+def user_preferences(request):
+    logged_in = authenticated_userid(request)
+    redirect_url = request.route_url('home')
+    try:
+        user = DBSession.query(User).filter_by(username=logged_in).first()
+    except DBAPIError:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    form = Form(request, schema=UserPreferencesSchema)
+    if 'form.submitted' in request.POST and form.validate():
+        if form.data.get('new_password'):
+            if User.check_password(logged_in, form.data['old_password']):
+                user.password = form.data['new_password']
+        user.email = form.data.get('email')
+        user.name = form.data.get('name')
+        DBSession.add(user)
+        return HTTPFound(location=redirect_url)
+    elif 'form.canceled' in request.POST:
+        return HTTPFound(location=redirect_url)
+    else:
+        return {'user': user, 'form': FormRenderer(form)}
 
 
 class LinkCheckSchema(formencode.Schema):
     allow_extra_fields = True
     url = formencode.validators.URL(not_empty=True)
     root_url = formencode.validators.URL(not_empty=True)
-    recursion_level = formencode.validators.Int(not_empty=False)
+    recursion_level = formencode.validators.Int()
     active = formencode.validators.Bool()
     check_css = formencode.validators.Bool()
     check_html = formencode.validators.Bool()
@@ -253,6 +313,7 @@ class LinkCheckSchema(formencode.Schema):
              renderer='templates/linkcheck_add.pt')
 def linkcheck_add(request):
     form = Form(request, schema=LinkCheckSchema)
+    redirect_url = request.route_url('linkchecks')
     if 'form.submitted' in request.POST and form.validate():
         session = DBSession()
         url = form.data['url']
@@ -275,10 +336,77 @@ def linkcheck_add(request):
             pause=form.data.get('pause'),
         )
         session.add(linkcheck)
-
-        redirect_url = request.route_url('home')
-
+        return HTTPFound(location=redirect_url)
+    elif 'form.canceled' in request.POST:
         return HTTPFound(location=redirect_url)
     return {
         'form': FormRenderer(form),
     }
+
+@view_config(permission='edit', route_name='editlinkcheck',
+             renderer='templates/linkcheck_edit.pt')
+def linkcheck_edit(request):
+    check_id = request.matchdict['check_id']
+    page = DBSession.query(LinkCheck).filter_by(check_id=check_id).first()
+    if page is None:
+        return HTTPNotFound('No such page')
+
+    form = Form(request, schema=LinkCheckSchema)
+    redirect_url = request.route_url('linkchecks')
+    if 'form.submitted' in request.POST and form.validate():
+        page.url=form.data['url']
+        page.root_url=form.data['root_url']
+        page.recursion_level=form.data.get('recursion_level')
+        page.active=form.data.get('active')
+        page.check_css=form.data.get('check_css')
+        page.check_html=form.data.get('check_html')
+        page.scan_virus=form.data.get('scan_virus')
+        page.warnings=form.data.get('warnings')
+        page.warning_size=form.data.get('warning_size')
+        page.anchors=form.data.get('anchors')
+        page.cookies=form.data.get('coockies')
+        page.cookiefile=form.data.get('cookiefile')
+        page.ignore_url=form.data.get('ignore_url')
+        page.no_follow_url=form.data.get('no_follow_url')
+        page.timeout=form.data.get('timeout')
+        page.pause=form.data.get('pause')
+        DBSession.add(linkcheck)
+        return HTTPFound(location=redirect_url)
+    elif 'form.canceled' in request.POST:
+        return HTTPFound(location=redirect_url)
+    else:
+        return {
+            'form': FormRenderer(form), 'data': page,
+        }
+
+
+
+@view_config(permission='edit', route_name='linkchecks',
+             renderer='templates/linkchecks.pt')
+def linkchecks_view(request):
+    try:
+        results = DBSession.query(LinkCheck).all()
+    except DBAPIError:
+        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    if results is None:
+        res = {'urls': []}
+    else:
+        urls = []
+        for linkcheck in results:
+            if linkcheck.active:
+                start_url = linkcheck.url
+            else:
+                start_url = 'inactive'
+            urls.append({
+                'name': linkcheck.root_url,
+                'start': start_url,
+                'options': ' '.join(linkchecker_options(linkcheck)),
+                'url': request.route_url('editlinkcheck', check_id=linkcheck.check_id),
+                })
+        res ={'urls': urls}
+    if request.params.get('format') == 'json':
+        response =  Response(json.dumps(res))
+        response.content_type='application/json'
+        return response
+    else:
+        return res

@@ -1,16 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
 <head>
-  <title>Linkcheck results for ${name}</title>
+  <title>Linkchecks</title>
 
 </head>
 <body>
-  <h1>${num} pages with problems in path ${name}</h1>
+  <h1></h1>
   <a href="${request.route_url('home')}">back to homepage</a>
   <ul>
     <li tal:repeat="url urls">
-        <a tal:attributes="href url[1]">${url[0]}</a>
+        <a tal:attributes="href url['url']">${url['name']}</a>
+        <br />
+        ${url['options']} ${url['start']}
     </li>
   </ul>
+  <form action="${request.route_url('addlinkcheck')}">
+    <input type="submit" name="add" value="Add new linkcheck">
+  </form>
 </body>
 </html>

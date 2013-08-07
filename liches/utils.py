@@ -28,3 +28,39 @@ def invalid_url(url):
     if not urlobj.hostname:
         return 'Required hostname is missing'
     return False
+
+def linkchecker_options(linkcheck):
+    options = []
+    if not linkcheck.active:
+        return options
+    else:
+        options.append('bin/linkchecker')
+    if linkcheck.anchors:
+        options.append('--anchors')
+    if linkcheck.check_css:
+        options.append('--check-css')
+    if linkcheck.check_html:
+        options.append('--check-html')
+    if linkcheck.cookies:
+        options.append(' --cookies')
+    if linkcheck.scan_virus:
+        options.append('--scan-virus')
+    if not linkcheck.warnings:
+        options.append('--no-warnings')
+    if linkcheck.ignore_url:
+        for line in linkcheck.ignore_url.splitlines():
+            options.append('--ignore-url=%s' % line )
+    if linkcheck.no_follow_url:
+        for line in linkcheck.no_follow_url.splitlines():
+            options.append('--no-follow-url=%s' % line )
+    if linkcheck.recursion_level:
+        options.append('--recursion-level=%i' % linkcheck.recursion_level)
+    if linkcheck.pause:
+        options.append('--pause=%i' % linkcheck.pause)
+    if linkcheck.warning_size:
+        options.append('--warning-size-bytes=%i' % linkcheck.warning_size)
+    if linkcheck.timeout:
+        options.append('--timeout=%i' % linkcheck.timeout)
+    return options
+
+

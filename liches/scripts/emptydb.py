@@ -33,7 +33,7 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    Base.metadata.bind = engine
     with transaction.manager:
         if len(argv) < 3:
             DBSession.query(CheckedLink).delete()

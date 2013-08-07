@@ -5,10 +5,6 @@ import csv
 
 from sqlalchemy import engine_from_config
 
-CSV_HEADER =['urlname', 'parentname', 'baseref', 'result', 'warningstring',
-    'infostring', 'valid', 'url', 'line', 'column', 'name', 'dltime',
-    'dlsize', 'checktime', 'cached', 'level', 'modified']
-
 
 
 from pyramid.paster import (
@@ -20,6 +16,7 @@ from ..models import (
     DBSession,
     CheckedLink,
     Base,
+    CSV_HEADER,
     )
 
 
@@ -38,7 +35,7 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    Base.metadata.bind = engine
     if len(argv) < 3:
         fo = open('linkchecker-out.csv', 'rU')
     else:

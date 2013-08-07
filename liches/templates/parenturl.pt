@@ -29,6 +29,7 @@ dl dd {
 </head>
 <body>
   <h1>${num} known problems in page ${name}</h1>
+  <a href="${request.route_url('checkpages')}">back to page overview </a>
   <tal:loop tal:repeat="url urls">
     <dl>
       <dt>URL Name:</dt>

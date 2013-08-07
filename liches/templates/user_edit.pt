@@ -7,16 +7,16 @@
 
 <body>
     <h1>Register</h1>
-    ${form.begin(request.route_url('register'))}
+    ${form.begin(request.route_url('preferences'))}
         <fieldset>
             ${form.csrf_token()}
-            ${form.errorlist('username')}
-            ${form.label('username', 'Username:')}
-            ${form.text('username')}
+            ${form.errorlist('old_password')}
+            ${form.label('old_password', 'Current Password:')}
+            ${form.password('old_password')}
             <br />
-            ${form.errorlist('password')}
-            ${form.label('password', 'Password:')}
-            ${form.password('password')}
+            ${form.errorlist('new_password')}
+            ${form.label('new_password', 'New Password:')}
+            ${form.password('new_password')}
             <br />
             ${form.errorlist('confirm_password')}
             ${form.label('confirm_password', 'Confirm password:')}
@@ -24,13 +24,13 @@
             <br />
             ${form.errorlist('name')}
             ${form.label('name', 'Full name:')}
-            ${form.text('name')}
+            ${form.text('name', value=user.name)}
             <br />
             ${form.errorlist('email')}
             ${form.label('email', 'Email:')}
-            ${form.text('email')}
+            ${form.text('email', value=user.email)}
             <br />
-            ${form.submit('form.submitted', 'Register', class_='submit')}
+            ${form.submit('form.submitted', 'Update', class_='submit')}
             ${form.submit('form.canceled', 'Cancel', class_='submit')}
         </fieldset>
     ${form.end()}
