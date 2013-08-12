@@ -370,9 +370,11 @@ def linkcheck_edit(request):
         page.no_follow_url=form.data.get('no_follow_url')
         page.timeout=form.data.get('timeout')
         page.pause=form.data.get('pause')
-        DBSession.add(linkcheck)
         return HTTPFound(location=redirect_url)
     elif 'form.canceled' in request.POST:
+        return HTTPFound(location=redirect_url)
+    elif 'form.deleted' in request.POST:
+        DBSession.delete(page)
         return HTTPFound(location=redirect_url)
     else:
         return {

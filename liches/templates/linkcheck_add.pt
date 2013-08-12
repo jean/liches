@@ -130,7 +130,7 @@
             </div>
             ${form.text('pause')}
             <br />
-            ${form.submit('form.submitted', 'Submit', class_='submit')}
+            ${form.submit('form.submitted', 'Add', class_='submit')}
             ${form.submit('form.canceled', 'Cancel', class_='submit')}
         </fieldset>
     ${form.end()}

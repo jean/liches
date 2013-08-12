@@ -7,7 +7,7 @@
 
 <body>
     <h1>Linkcheck</h1>
-    ${form.begin(request.route_url('addlinkcheck'))}
+    ${form.begin(request.route_url('editlinkcheck', check_id=data.check_id))}
         <fieldset>
             ${form.csrf_token()}
             ${form.errorlist('url')}
@@ -94,7 +94,7 @@
             <div class="form-help">
             Read a file with initial cookie data.
             </div>
-            ${form.textarea('cookiefile', value=data.cookiefile)}
+            ${form.textarea('cookiefile', content=data.cookiefile)}
             <br />
             -->
             ${form.errorlist('ignore_url')}
@@ -103,7 +103,7 @@
             URLs matching the given regular expressions will be ignored
             and not checked.
             </div>
-            ${form.textarea('ignore_url', value=data.ignore_url)}
+            ${form.textarea('ignore_url', content=data.ignore_url)}
             <br />
             ${form.errorlist('no_follow_url')}
             ${form.label('no_follow_url', 'No follow URL:')}
@@ -111,7 +111,7 @@
             Check but do not recurse into URLs matching the given regular
             expressions.
             </div>
-            ${form.textarea('no_follow_url', value=data.no_follow_url)}
+            ${form.textarea('no_follow_url', content=data.no_follow_url)}
             <br />
             ${form.errorlist('timeout')}
             ${form.label('timeout', 'Timeout:')}
@@ -130,7 +130,8 @@
             </div>
             ${form.text('pause', value=data.pause)}
             <br />
-            ${form.submit('form.submitted', 'Submit', class_='submit')}
+            ${form.submit('form.submitted', 'Edit', class_='submit')}
+            ${form.submit('form.deleted', 'Delete', class_='submit')}
             ${form.submit('form.canceled', 'Cancel', class_='submit')}
         </fieldset>
     ${form.end()}
