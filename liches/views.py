@@ -146,23 +146,30 @@ def parenturl_view(request):
 @view_config(route_name='checkpages', renderer='templates/pages.pt', permission='view')
 def checked_pages_view(request):
     parenturl = request.params.get('url')
+    code = request.params.get('code')
     try:
+        filter = []
         if parenturl:
+            filter.append(CheckedLink.parentname.like(parenturl +'%'))
+        if code:
+            filter.append(CheckedLink.result == code)
+        if filter:
             results = DBSession.query(CheckedLink.parentname
-                ).filter(CheckedLink.parentname.like(parenturl +'%')
+                ).filter( *filter
                 ).distinct().all()
         else:
             results = DBSession.query(CheckedLink.parentname).distinct().all()
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
+    codes = DBSession.query(CheckedLink.result).distinct().all()
     if results is None:
-        res = {'num': 0, 'urls': [], 'name': pagename}
+        res = {'num': 0, 'urls': [], 'name': pagename, 'codes': codes, 'code': code}
     else:
         urls = []
         for url in results:
             urls.append([url[0],
             resource_url(request.context, request, 'checkurl', query={'url': url[0]})])
-        res = {'num': len(results), 'urls': urls, 'name':parenturl}
+        res = {'num': len(results), 'urls': urls, 'name':parenturl, 'codes': codes, 'code':code}
     if request.params.get('format') == 'json':
         response =  Response(json.dumps(res))
         response.content_type='application/json'

@@ -7,6 +7,17 @@
 <body>
   <h1>${num} pages with problems in path ${name}</h1>
   <a href="${request.route_url('home')}">back to homepage</a>
+  <form action="${request.route_url('checkpages')}">
+    <b tal:condition="code">filtered by ${code}</b>
+    <input type="hidden" tal:condition="name" name="url" value="${name}" />
+    <br/>
+    <select name=code>
+      <tal:loop tal:repeat="c python:[c[0] for c in codes]">
+        <option value="${c}">${c}</option>
+      </tal:loop>
+    </select>
+    <input type="submit" name="filter" value="Filter">
+  </form>
   <ul>
     <li tal:repeat="url urls">
         <a tal:attributes="href url[1]">${url[0]}</a>
