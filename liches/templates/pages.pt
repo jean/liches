@@ -11,9 +11,12 @@
     <b tal:condition="code">filtered by ${code}</b>
     <input type="hidden" tal:condition="name" name="url" value="${name}" />
     <br/>
-    <select name=code>
+    <select name="code">
+      <option value="">(All)</option>
       <tal:loop tal:repeat="c python:[c[0] for c in codes]">
-        <option value="${c}">${c}</option>
+        <option tal:attributes="value c;
+                    selected python: 'selected' if c==code else None"
+                    tal:content="c"></option>
       </tal:loop>
     </select>
     <input type="submit" name="filter" value="Filter">
