@@ -36,13 +36,25 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        un = raw_input('Username [admin]: ')
-        if not un:
-            un = 'admin'
-        pw = raw_input('Password [generate]: ')
-        if not pw:
-            pw = ''.join(random.sample(string.ascii_letters + string.digits, 8))
-            print( 'password generated: ', pw)
+        try:
+            f = open('password.txt','r')
+            data = f.read()
+            un, pw = data.split(':')
+            un=un.strip()
+            pw=pw.strip()
+            f.close()
+        except:
+            un = raw_input('Username [admin]: ')
+            if not un:
+                un = 'admin'
+            pw = raw_input('Password [generate]: ')
+            if not pw:
+                pw = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+                print( 'password generated: ', pw)
+            f = open('password.txt', 'w')
+            data = '%s:%s' % (un, pw)
+            f.write(data)
+            f.close()
         fn = raw_input('Fullname: ')
         em = raw_input('Email: ')
         user = User(un, pw, fn, em)

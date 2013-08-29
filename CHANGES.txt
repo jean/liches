@@ -1,3 +1,9 @@
+0.5 (2013/08/29)
+-----------------
+
+- add ability to show invalid pages only
+- inititialize_liches_db writes a file 'password.txt' with user:password
+
 0.4 (2013/08/12)
 ----------------
 

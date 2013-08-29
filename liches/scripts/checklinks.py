@@ -56,8 +56,11 @@ def main(argv=sys.argv):
             fo = open(filename, 'rU')
             reader=csv.reader(fo, delimiter=';')
             line = reader.next()
+            #the first lines are comments and are to be ignored
             while line[0].startswith('#'):
                 line = reader.next()
+            #the header comes after the comments
+            #linkchecker < 8 does not have 'modified' field
             assert(line[:16] == CSV_HEADER[:16])
             try:
                 for line in reader:
@@ -65,12 +68,12 @@ def main(argv=sys.argv):
                         continue
                     else:
                         line[10] = line[10].decode('UTF-8')
-                    i=0
-                    for l in line:
-                        print i,CSV_HEADER[i],l
-                        i+=1
+                    #i=0
+                    #for l in line:
+                    #    print i,CSV_HEADER[i],l
+                    #    i+=1
                     checked_link = CheckedLink( *line)
                     DBSession.add(checked_link)
             except:
                 print "Error in line: ", line
-        os.remove(filename)
+        #os.remove(filename)

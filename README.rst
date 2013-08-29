@@ -47,6 +47,9 @@ In the virtualenv you created above execute these commands
     Email: root@localhost
     $ bin/pserve production.ini
 
+Username and password are written to the file 'password.txt'. Delete this
+file after installation.
+
 Install for development
 ------------------------
 
@@ -72,6 +75,10 @@ In the virtualenv you created above execute these commands:
     Fullname: Administrator
     Email: root@localhost
     $ bin/pserve development.ini
+
+
+Username and password are written to the file 'password.txt', so you do
+not have to input these values every time you reinitialize your database.
 
 Configuration
 --------------
