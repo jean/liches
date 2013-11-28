@@ -14,7 +14,7 @@ from pyramid.view import view_config
 from pyramid.url import resource_url
 
 from sqlalchemy.exc import DBAPIError
-
+from sqlalchemy import func
 from .models import (
     DBSession,
     CheckedLink,
@@ -160,11 +160,13 @@ def checked_pages_view(request):
         if invalid_only:
             filter.append(CheckedLink.valid == 'False')
         if filter:
-            results = DBSession.query(CheckedLink.parentname
+            results = DBSession.query(CheckedLink.parentname,
+                func.count(CheckedLink.urlname)
                 ).filter( *filter
-                ).distinct().all()
+                ).group_by(CheckedLink.parentname).all()
         else:
-            results = DBSession.query(CheckedLink.parentname).distinct().all()
+            results = DBSession.query(CheckedLink.parentname,
+            func.count(CheckedLink.urlname)).group_by(CheckedLink.parentname).all()
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     codes = DBSession.query(CheckedLink.result).distinct().all()
@@ -175,7 +177,8 @@ def checked_pages_view(request):
         urls = []
         for url in results:
             urls.append([url[0],
-            resource_url(request.context, request, 'checkurl', query={'url': url[0]})])
+            resource_url(request.context, request, 'checkurl', query={'url': url[0]}),
+            url[1]])
         res = {'num': len(results), 'urls': urls, 'name':parenturl,
             'codes': codes, 'code':code, 'invalid': invalid_only}
     if request.params.get('format') == 'json':
@@ -390,6 +393,9 @@ def linkcheck_edit(request):
         return HTTPFound(location=redirect_url)
     elif 'form.deleted' in request.POST:
         DBSession.delete(page)
+        return HTTPFound(location=redirect_url)
+    elif 'form.execute' in request.POST:
+        process = Popen(['bin/liches_linkchecker', sys.argv[1], check_id])
         return HTTPFound(location=redirect_url)
     else:
         return {

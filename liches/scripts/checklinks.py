@@ -26,21 +26,31 @@ from ..models import (
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
-    print('usage: %s <config_uri> \n'
+    print('usage: %s <config_uri> [linkcheckid] \n'
+           'linkcheckid is optional, when given only the linkcheck with this id will be executed',
           '(example: "%s development.ini")' % (cmd, cmd))
     sys.exit(1)
 
 
 def main(argv=sys.argv):
-    if len(argv) != 2:
+    if len(argv) < 2:
         usage(argv)
+    lc_id = None
+    if len(argv) == 3:
+        try:
+            lc_id = int(argv[2])
+        except:
+            usage(argv)
     config_uri = argv[1]
     setup_logging(config_uri)
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
-    linkchecks = DBSession.query(LinkCheck).filter_by(active=True).all()
+    if lc_id is None:
+        linkchecks = DBSession.query(LinkCheck).filter_by(active=True).all()
+    else:
+        linkchecks = DBSession.query(LinkCheck).filter_by(check_id=lc_id).all()
     for linkcheck in linkchecks:
         filename = ''.join(random.sample(
             string.ascii_letters + string.digits, 16)) + '.csv'
@@ -72,4 +82,4 @@ def main(argv=sys.argv):
                     DBSession.add(checked_link)
             except:
                 print "Error in line: ", line
-        #os.remove(filename)
+        os.remove(filename)

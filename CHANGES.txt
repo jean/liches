@@ -1,3 +1,19 @@
+Changes
+========
+
+0.7 (2013/11/28)
+----------------
+
+- remove linkchecker dependency so you can `pip install -U liches`
+- pyramid 1.5 compatible (if you are using pyramid < 1.5 use liches 0.6)
+
+0.6 (2013/11/28)
+----------------
+
+- add ability to invoke linkchecker in the webinterface
+- add a broken links count to each page in overview
+
+
 0.5 (2013/08/29)
 -----------------
 

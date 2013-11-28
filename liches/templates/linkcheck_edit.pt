@@ -132,6 +132,7 @@
             <br />
             ${form.submit('form.submitted', 'Edit', class_='submit')}
             ${form.submit('form.deleted', 'Delete', class_='submit')}
+            ${form.submit('form.execute', 'Execute', class_='submit')}
             ${form.submit('form.canceled', 'Cancel', class_='submit')}
         </fieldset>
     ${form.end()}

@@ -15,6 +15,21 @@ server side programming or use it as a stand alone service.
 An example how to integrate it into a website can be found at
 https://github.com/collective/collective.liches
 
+Rational
+--------
+
+While linkchecker_ itself can produce html this results in a single
+monolithic page with all results included. This can be intimidating
+and is from a usability point of view suboptimal. Liches presents
+the results agregated per page, so you get a quick overview of how
+many pages in your site have broken links and for each page an overview
+which links are broken. You can also filter the results for a specific
+error message so you can narrow down and prioritize which errors to deal
+with first.
+
+You can configure your linkchecks and invoke linkchecker through the
+webinterface.
+
 Install
 =======
 
@@ -148,6 +163,7 @@ On the commandline you can then call:
 This command will call linkchecker_ for all the checks you have enabled
 and import the results into the database. For regular linkchecks you can
 call this command as a cron job.
+
 
 Manual Import
 --------------

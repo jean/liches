@@ -8,19 +8,20 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
+    'pyramid_chameleon',
     'SQLAlchemy',
     'transaction',
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
-    'linkchecker',
+    #'linkchecker',
     'cryptacular',
     'pyramid_simpleform',
     ]
 
 setup(name='liches',
-      version='0.5',
+      version='0.7',
       description='Liches a server for linkchecker results',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -28,7 +29,7 @@ setup(name='liches',
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         ],

@@ -28,7 +28,7 @@
   </form>
   <ul>
     <li tal:repeat="url urls">
-        <a tal:attributes="href url[1]">${url[0]}</a>
+        <a tal:attributes="href url[1]">${url[0]}</a> <i>(${url[2]})</i>
     </li>
   </ul>
 </body>
