@@ -20,7 +20,7 @@ requires = [
     ]
 
 setup(name='liches',
-      version='0.4',
+      version='0.5',
       description='Liches a server for linkchecker results',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -28,7 +28,7 @@ setup(name='liches',
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         ],

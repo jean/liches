@@ -9,8 +9,13 @@
   <a href="${request.route_url('home')}">back to homepage</a>
   <form action="${request.route_url('checkpages')}">
     <b tal:condition="code">filtered by ${code}</b>
+    <b tal:condition="invalid">pages with invalid links</b>
     <input type="hidden" tal:condition="name" name="url" value="${name}" />
     <br/>
+    <input type="checkbox" id="invalid-only" name="invalid" value="1"
+        tal:attributes="checked python: 'checked' if invalid else None">
+    <label for="invalid-only">show pages with invalid links only</label>
+    <p>or filter by status</p>
     <select name="code">
       <option value="">(All)</option>
       <tal:loop tal:repeat="c python:[c[0] for c in codes]">

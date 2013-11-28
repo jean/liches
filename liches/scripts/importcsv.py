@@ -52,10 +52,6 @@ def main(argv=sys.argv):
                     continue
                 else:
                     line[10] = line[10].decode('UTF-8')
-                i=0
-                for l in line:
-                    print i,CSV_HEADER[i],l
-                    i+=1
                 checked_link = CheckedLink( *line)
                 DBSession.add(checked_link)
         except:

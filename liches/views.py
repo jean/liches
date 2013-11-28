@@ -147,12 +147,18 @@ def parenturl_view(request):
 def checked_pages_view(request):
     parenturl = request.params.get('url')
     code = request.params.get('code')
+    if code:
+        invalid_only = None
+    else:
+        invalid_only = request.params.get('invalid') == "1"
     try:
         filter = []
         if parenturl:
             filter.append(CheckedLink.parentname.like(parenturl +'%'))
         if code:
             filter.append(CheckedLink.result == code)
+        if invalid_only:
+            filter.append(CheckedLink.valid == 'False')
         if filter:
             results = DBSession.query(CheckedLink.parentname
                 ).filter( *filter
@@ -163,13 +169,15 @@ def checked_pages_view(request):
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
     codes = DBSession.query(CheckedLink.result).distinct().all()
     if results is None:
-        res = {'num': 0, 'urls': [], 'name': pagename, 'codes': codes, 'code': code}
+        res = {'num': 0, 'urls': [], 'name': pagename, 'codes': codes,
+            'code': code, 'invalid': invalid_only}
     else:
         urls = []
         for url in results:
             urls.append([url[0],
             resource_url(request.context, request, 'checkurl', query={'url': url[0]})])
-        res = {'num': len(results), 'urls': urls, 'name':parenturl, 'codes': codes, 'code':code}
+        res = {'num': len(results), 'urls': urls, 'name':parenturl,
+            'codes': codes, 'code':code, 'invalid': invalid_only}
     if request.params.get('format') == 'json':
         response =  Response(json.dumps(res))
         response.content_type='application/json'
