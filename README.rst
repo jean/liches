@@ -1,6 +1,11 @@
 Introduction
 ==================
 
+In fantasy fiction, a lich is a type of undead creature. (wikipedia_)
+Liches is used to find dead links in your website so I thought this name
+was appropriate (and a nicer explanation than liches stands for LInk Checker
+Server).
+
 Liches wraps the linkchecker_ output into a web interface.
 You can run Liches as a stand-alone service for use with your websites
 regardless of the language they're written in. While Liches itself is
@@ -176,3 +181,4 @@ which can also be accessed as JSON_
 .. _linkchecker: http://wummel.github.io/linkchecker/
 .. _virtualenv: http://www.virtualenv.org/
 .. _JSON: http://www.json.org/
+.. _wikipedia: https://en.wikipedia.org/wiki/Lich
