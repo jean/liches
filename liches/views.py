@@ -346,7 +346,7 @@ def linkcheck_add(request):
             warnings=form.data.get('warnings'),
             warning_size=form.data.get('warning_size'),
             anchors=form.data.get('anchors'),
-            cookies=form.data.get('coockies'),
+            cookies=form.data.get('cookies'),
             cookiefile=form.data.get('cookiefile'),
             ignore_url=form.data.get('ignore_url'),
             no_follow_url=form.data.get('no_follow_url'),
@@ -382,7 +382,7 @@ def linkcheck_edit(request):
         page.warnings=form.data.get('warnings')
         page.warning_size=form.data.get('warning_size')
         page.anchors=form.data.get('anchors')
-        page.cookies=form.data.get('coockies')
+        page.cookies=form.data.get('cookies')
         page.cookiefile=form.data.get('cookiefile')
         page.ignore_url=form.data.get('ignore_url')
         page.no_follow_url=form.data.get('no_follow_url')
